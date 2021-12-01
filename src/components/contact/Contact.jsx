@@ -1,5 +1,8 @@
 import Topbar from "../topbar/Topbar";
 import "./contact.scss";
+import emailjs from "emailjs-com";
+import { useRef } from "react";
+import { useState } from "react";
 import {
   Facebook,
   Instagram,
@@ -10,6 +13,32 @@ import {
   LocationOn,
 } from "@material-ui/icons";
 function Contact() {
+    const formRef = useRef();
+ 
+  const [message, setMessage] = useState(false);
+  
+
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    emailjs
+      .sendForm(
+        "service_g7n6n8m",
+        "template_9n4oap7",
+        formRef.current,
+        "user_yqimngPQxBoZsByq1zEN0"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+          setMessage(true);
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+  };
   return (
     <div className="contacto">
       <Topbar />
@@ -78,19 +107,19 @@ function Contact() {
             </div>
           </div>
 
-          <form action="">
+          <form ref={formRef} onSubmit={handleSubmit}>
             <div className="inputBox">
-              <input type="text" placeholder="your name" />
-              <input type="number" placeholder="your number" />
+              <input type="text" placeholder="your name"  name="user_name" />
+              <input type="number" placeholder="your number"  name="user_number"/>
             </div>
 
             <div className="inputBox">
-              <input type="email" placeholder="your email" />
-              <input type="text" placeholder="your subject" />
+              <input type="email" placeholder="your email"    name="user_email"/>
+              <input type="text" placeholder="your subject"   name="user_subject" />
             </div>
 
             <textarea
-              name=""
+               name="message"
               placeholder="your message"
               id=""
               cols="30"
